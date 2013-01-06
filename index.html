@@ -1,0 +1,89 @@
+<!doctype html>
+<meta charset="UTF-8">
+<title>Karate</title>
+<canvas id="game"></canvas>
+<button id="Start" onclick=init();>Start</button>
+<button id="Reset" onclick=reset();>Reset</button>
+<script src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
+<script>
+var canvas;
+var stage;
+var screen_width;
+var screen_height;
+var bmpAnimation;
+
+var imgKarateWalk = new Image();
+
+function init() {
+  canvas = document.getElementById("game");
+
+  imgKarateWalk.onload = handleImageLoad;
+  imgKarateWalk.onerror = handleImageError;
+  imgKarateWalk.src = "img/karate-walk-spritesheet.png";
+}
+
+function reset() {
+  stage.removeAllChildren();
+  createjs.Ticket.removeAllListeners();
+  stage.update();
+}
+
+function handleImageLoad(e) {
+  startGame();
+}
+
+function startGame() {
+  stage = new createjs.Stage(canvas);
+  screen_width = canvas.width;
+  screen_height = canvas.height;
+
+  var spriteSheet = new createjs.SpriteSheet({
+    images: [imgKarateWalk],
+    frames: {width: 32, height: 32, regX: 32, regY: 32},
+    animations: {
+      walk: [0, 7, "walk"]
+    }
+  });
+
+  bmpAnimation = new createjs.BitmapAnimation(spriteSheet);
+  bmpAnimation.gotoAndPlay("walk");
+
+  bmpAnimation.shadow = new createjs.Shadow('#454', 0, 5, 4);
+
+  bmpAnimation.name = 'karate';
+  bmpAnimation.direction = 90;
+  bmpAnimation.vX = 4;
+  bmpAnimation.x = 16;
+  bmpAnimation.y = 32;
+
+  bmpAnimation.currentFrame = 0;
+
+  stage.addChild(bmpAnimation);
+
+  createjs.Ticker.addListener(window);
+  createjs.Ticker.useRAF = true;
+  createjs.Ticket.setFPS(60);
+}
+
+function handleImageError(e) {
+  console.log("Error Loading Image : " + e.target.src);
+}
+
+function tick() {
+  if(bmpAnimation.x >= screen_width - 16) {
+    bmpAnimation.direction = -90;
+  }
+
+  if(bmpAnimation.x < 16) {
+    bmpAnimation.direction = 90;
+  }
+
+  if(bmpAnimation.direction == 90) {
+    bmpAnimation.x += bmpAnimation.vX;
+  } else {
+    bmpAnimation.x -= bmpAnimation.vX;
+  }
+
+  stage.update();
+}
+</script>
