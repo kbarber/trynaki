@@ -36,9 +36,9 @@ function startGame() {
 
   var spriteSheet = new createjs.SpriteSheet({
     images: [imgKarateWalk],
-    frames: {width: 32, height: 32, regX: 32, regY: 32},
+    frames: {width: 32, height: 32, regX: 16, regY: 16},
     animations: {
-      walk: [0, 7, "walk", 4]
+      walk: [0, 7, "walk", 6]
     }
   });
 
@@ -50,15 +50,13 @@ function startGame() {
   bmpAnimation.regX = bmpAnimation.spriteSheet.frameWidth/2|0;
   bmpAnimation.regY = bmpAnimation.spriteSheet.frameHeight/2|0;
 
-  bmpAnimation.gotoAndPlay("walk_h");
-
-  bmpAnimation.shadow = new createjs.Shadow('#454', 0, 5, 4);
+  bmpAnimation.gotoAndPlay("walk");
 
   bmpAnimation.name = 'karate';
   bmpAnimation.direction = 90;
   bmpAnimation.vX = 1;
-  bmpAnimation.x = 16;
-  bmpAnimation.y = 32;
+  bmpAnimation.x = 4;
+  bmpAnimation.y = 16;
 
   bmpAnimation.currentFrame = 9;
 
@@ -74,14 +72,14 @@ function handleImageError(e) {
 }
 
 function tick() {
-  if(bmpAnimation.x >= screen_width - 16) {
+  if(bmpAnimation.x >= screen_width - 8) {
     bmpAnimation.direction = -90;
-    bmpAnimation.gotoAndPlay("walk");
+    bmpAnimation.gotoAndPlay("walk_h");
   }
 
-  if(bmpAnimation.x < 16) {
+  if(bmpAnimation.x < 8) {
     bmpAnimation.direction = 90;
-    bmpAnimation.gotoAndPlay("walk_h");
+    bmpAnimation.gotoAndPlay("walk");
   }
 
   if(bmpAnimation.direction == 90) {
@@ -93,6 +91,6 @@ function tick() {
   stage.update();
 }
 </script>
-<canvas id="game" width="240" height="32"></canvas>
+<canvas id="game" width="240" height="32" style="height:128px; width:960px; background-color:#005000;"></canvas>
 <button id="Start" onclick=init();>Start</button>
 <button id="Reset" onclick=reset();>Reset</button>
