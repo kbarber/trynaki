@@ -43,6 +43,12 @@ module.exports = function(grunt) {
         files: [
           {expand: true, src: ["**"], cwd: "ui/public", dest: "build/public"}
         ]
+      },
+      test: {
+        files: [
+          {expand: true, src: ["**"], cwd: "build/public/js", dest: "test/js"},
+          {expand: true, src: ["**"], cwd: "build/public/css", dest: "test/css"}
+        ]
       }
     },
     clean: {
@@ -50,13 +56,19 @@ module.exports = function(grunt) {
       jsdoc: ['out']
     },
     qunit: {
-      all: ['test/**/*.html']
+      all: {
+        options: {
+          urls: [
+            'http://localhost:8000/tests.html'
+          ]
+        }
+      }
     },
     connect: {
       server: {
         options: {
-          port: 9001,
-          base: 'build/public'
+          port: 8000,
+          base: 'test'
         }
       }
     }
@@ -78,5 +90,5 @@ module.exports = function(grunt) {
   grunt.registerTask("lint", ["csslint", "htmllint", "jshint"]);
   grunt.registerTask("build", ["test", "clean:build", "concat", "copy:build"]);
   grunt.registerTask("fastbuild", ["concat", "copy:build"]);
-  grunt.registerTask("test", ['lint', 'connect', 'qunit']);
+  grunt.registerTask("test", ['concat', 'lint', 'copy:test', 'connect', 'qunit']);
 };

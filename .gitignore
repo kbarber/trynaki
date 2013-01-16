@@ -4,3 +4,5 @@ out
 npm-debug.log
 *.tar.gz
 build/
+test/css
+test/js
