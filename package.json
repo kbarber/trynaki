@@ -2,14 +2,15 @@
   "name": "trynaki",
   "version": "0.0.1",
   "scripts": {
-    "start": "grunt fastbuild && pushd build && node server && popd",
-    "test": "grunt test"
+    "start": "$(npm bin)/grunt fastbuild && pushd build && node server && popd",
+    "test": "$(npm bin)/grunt test"
   },
   "dependencies": {
     "express": "~3.0.0"
   },
   "devDependencies": {
     "grunt": "0.4.0rc5",
+    "grunt-cli": "0.1.6",
     "grunt-html": "~0.3.0",
     "grunt-css": "~0.5.0",
     "grunt-contrib-copy": "ctalkington/grunt-contrib-copy#patch4",
@@ -17,6 +18,9 @@
     "grunt-contrib-compress": "~0.3.0",
     "grunt-contrib-connect": "~0.1.0",
     "grunt-contrib-qunit": "0.1.1rc5",
-    "grunt-contrib-concat": "0.1.2rc5"
+    "grunt-contrib-concat": "0.1.2rc5",
+    "grunt-contrib-jshint": "0.1.1rc5",
+    "grunt-contrib-nodeunit": "0.1.2rc5",
+    "grunt-contrib-watch": "0.2.0rc5"
   }
 }

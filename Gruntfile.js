@@ -25,9 +25,9 @@ module.exports = function(grunt) {
       server: ['server/js/**.js']
     },
     jshint: {
+      all: ['Gruntfile.js', 'ui/js/**/*.js', 'server/js/**/*.js'],
       options: {
-        browser: true,
-        es5: true // Tolerate the scope when checking for reserved words
+        es5: true
       }
     },
     htmllint: {
@@ -70,10 +70,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask("default", ["lint", "csslint", "htmllint"]);
-  grunt.registerTask("lint", ["lint", "csslint", "htmllint"]);
-  grunt.registerTask("build", ["default", "clean:build", "concat", "copy:build"]);
+  grunt.registerTask("default", ["lint"]);
+  grunt.registerTask("lint", ["csslint", "htmllint", "jshint"]);
+  grunt.registerTask("build", ["test", "clean:build", "concat", "copy:build"]);
   grunt.registerTask("fastbuild", ["concat", "copy:build"]);
-  grunt.registerTask("test", ['connect', 'qunit']);
+  grunt.registerTask("test", ['lint', 'connect', 'qunit']);
 };
