@@ -17,5 +17,5 @@ asyncTest("reset() with delay should not throw exception", function() {
   setTimeout(function() {
     equal(reset(), true);
     start();
-  }, 1000);
+  }, 3000);
 });
