@@ -19,19 +19,14 @@ module.exports = function(grunt) {
         dest: 'build/server.js'
       }
     },
-    lint: {
-      core: ['grunt.js'],
-      ui: ['ui/js/**.js'],
-      server: ['server/js/**.js']
-    },
     jshint: {
-      all: ['Gruntfile.js', 'ui/js/**/*.js', 'server/js/**/*.js'],
+      all: ['Gruntfile.js', 'ui/js/**/*.js', 'server/js/**/*.js', 'test/*.js'],
       options: {
         es5: true
       }
     },
     htmllint: {
-      all: ["ui/public/**.html"]
+      all: ["ui/public/**.html", 'test/*.html']
     },
     csslint: {
       ui: {
@@ -47,7 +42,8 @@ module.exports = function(grunt) {
       test: {
         files: [
           {expand: true, src: ["**"], cwd: "build/public/js", dest: "test/js"},
-          {expand: true, src: ["**"], cwd: "build/public/css", dest: "test/css"}
+          {expand: true, src: ["**"], cwd: "build/public/css", dest: "test/css"},
+          {expand: true, src: ["**"], cwd: "build/public/img", dest: "test/img"}
         ]
       }
     },

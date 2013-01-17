@@ -15,9 +15,14 @@ function init() {
 }
 
 function reset() {
-  stage.removeAllChildren();
-  createjs.Ticker.removeAllListeners();
-  stage.update();
+  if(stage) {
+    stage.removeAllChildren();
+    createjs.Ticker.removeAllListeners();
+    stage.update();
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function handleImageLoad(e) {
