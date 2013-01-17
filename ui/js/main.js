@@ -66,6 +66,8 @@ function startGame() {
   screen_width = canvas.width;
   screen_height = canvas.height;
 
+  drawMap();
+
   var spriteSheet = new createjs.SpriteSheet({
     images: [imgKarateWalk],
     frames: {width: 32, height: 32, regX: 16, regY: 16},
@@ -93,8 +95,6 @@ function startGame() {
   bmpAnimation.currentFrame = 8;
 
   stage.addChild(bmpAnimation);
-
-  drawMap();
 
   createjs.Ticker.addListener(window);
   createjs.Ticker.useRAF = true;
