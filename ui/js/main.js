@@ -8,6 +8,11 @@ var imgKarateWalk = new Image();
 
 function init() {
   canvas = document.getElementById("game");
+  canvas.height = 768;
+  canvas.width = 1280;
+  canvas.style.height = 384;
+  canvas.style.width = 640;
+  canvas.style['background-color'] = '#000000';
 
   imgKarateWalk.onload = handleImageLoad;
   imgKarateWalk.onerror = handleImageError;
@@ -56,11 +61,23 @@ function startGame() {
   bmpAnimation.direction = 90;
   bmpAnimation.vX = 0.3;
   bmpAnimation.x = 8;
-  bmpAnimation.y = 16;
+  bmpAnimation.y = 752;
 
   bmpAnimation.currentFrame = 8;
 
   stage.addChild(bmpAnimation);
+
+  // Draw a rectangle
+  var g = new createjs.Graphics();
+  g.setStrokeStyle(1);
+  g.beginStroke(createjs.Graphics.getRGB(255,255,255));
+  g.beginFill(createjs.Graphics.getRGB(0,0,0));
+  g.drawRect(0, 0, 32, 32);
+  var s = new createjs.Shape(g);
+  s.x = 0;
+  s.y = 736;
+  stage.addChild(s);
+  stage.update();
 
   createjs.Ticker.addListener(window);
   createjs.Ticker.useRAF = true;
