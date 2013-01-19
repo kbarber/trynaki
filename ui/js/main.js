@@ -17,6 +17,7 @@ var imgKarateWalk = new Image();
 var jumpHeight = 0; // Current height in px of jump
 var jumping = false; // Is the player jumping
 var onSurface = true; // Is the player on a surface
+var hitCeiling = false;
 
 var map1 = [
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], 
@@ -139,7 +140,7 @@ function handleKeyDown(e) {
     case KEYCODE_W: ;
     case KEYCODE_UP:
       // jump
-      if(!jumping) {
+      if(!jumping && onSurface) {
         jumping = true;
       }
       break;
@@ -212,8 +213,19 @@ function updateOnSurface() {
   }
 }
 
+function updateHitCeiling() {
+  var under = stage.getObjectUnderPoint(bmpAnimation.x, bmpAnimation.y - 14);
+
+  if(under) {
+    hitCeiling = true;
+  } else {
+    hitCeiling = false;
+  }
+}
+
 function tick() {
   updateOnSurface();
+  updateHitCeiling();
 
   if(bmpAnimation.x > screen_width - 8) {
     bmpAnimation.direction = -90;
@@ -232,7 +244,7 @@ function tick() {
   }
 
   if(jumping) {
-    if(jumpHeight < 72) {
+    if(jumpHeight < 72 && !hitCeiling) {
       bmpAnimation.y = bmpAnimation.y - 4;
       jumpHeight = jumpHeight + 4;
     } else {
