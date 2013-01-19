@@ -4,7 +4,18 @@ var screen_width;
 var screen_height;
 var bmpAnimation;
 
+var KEYCODE_SPACE = 32;
+var KEYCODE_UP = 38;
+var KEYCODE_LEFT = 37;
+var KEYCODE_RIGHT = 39;
+var KEYCODE_W = 87;
+var KEYCODE_A = 65;
+var KEYCODE_D = 68;
+
 var imgKarateWalk = new Image();
+
+var jumpHeight = 0;
+var jumping = false;
 
 var map1 = [
   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], 
@@ -72,7 +83,7 @@ function startGame() {
     images: [imgKarateWalk],
     frames: {width: 32, height: 32, regX: 16, regY: 16},
     animations: {
-      walk: [0, 7, "walk", 4]
+      walk: [0, 7, "walk", 8]
     }
   });
 
@@ -88,7 +99,7 @@ function startGame() {
 
   bmpAnimation.name = 'karate';
   bmpAnimation.direction = 90;
-  bmpAnimation.vX = 0.3;
+  bmpAnimation.vX = 1;
   bmpAnimation.x = 8;
   bmpAnimation.y = 336;
 
@@ -96,10 +107,61 @@ function startGame() {
 
   stage.addChild(bmpAnimation);
 
+  document.onkeydown = function(e) {
+    handleKeyDown(e);
+  }
+
+  document.onkeyup = function(e) {
+    handleKeyUp(e);
+  }
+
   createjs.Ticker.addListener(window);
   createjs.Ticker.useRAF = true;
   createjs.Ticker.setFPS(30);
 }
+
+function handleKeyDown(e) {
+  if(!e) { var e = window.event; }
+  switch(e.keyCode) {
+    case KEYCODE_A: ;
+    case KEYCODE_LEFT:
+      // move left
+      bmpAnimation.direction = -90;
+      bmpAnimation.gotoAndPlay("walk_h");
+      break;
+    case KEYCODE_D: ;
+    case KEYCODE_RIGHT:
+      // move right
+      bmpAnimation.direction = 90;
+      bmpAnimation.gotoAndPlay("walk");
+      break;
+    case KEYCODE_W: ;
+    case KEYCODE_UP:
+      // jump
+      if(!jumping) {
+        jumping = true;
+      }
+      break;
+  }
+}
+
+function handleKeyUp(e) {
+  //cross browser issues exist
+  if (!e) { var e = window.event; }
+  switch (e.keyCode) {
+    case KEYCODE_A: ;
+    case KEYCODE_LEFT: ;
+    case KEYCODE_D: ;
+    case KEYCODE_RIGHT:
+      // stop moving
+      break;
+    case KEYCODE_W: ;
+    case KEYCODE_UP:
+      // stop jumping
+      jumping = false;
+      break;
+  }
+};
 
 function drawMap() {
   var g = new createjs.Graphics();
@@ -154,6 +216,16 @@ function tick() {
     bmpAnimation.x += bmpAnimation.vX;
   } else {
     bmpAnimation.x -= bmpAnimation.vX;
+  }
+
+  if(jumping) {
+    if(jumpHeight < 72) {
+      bmpAnimation.y = bmpAnimation.y - 3;
+      jumpHeight = jumpHeight + 3;
+    } else {
+      jumping = false;
+      jumpHeight = 0;
+    }
   }
 
   stage.update();
